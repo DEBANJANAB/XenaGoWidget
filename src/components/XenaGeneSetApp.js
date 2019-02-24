@@ -4,7 +4,6 @@ import XenaGoViewer from './XenaGoViewer';
 import {sum} from 'underscore';
 import {Avatar, Chip, Button, AppBar, Link, Navigation, BrowseButton} from "react-toolbox";
 import {Checkbox, Switch, IconMenu, MenuItem, MenuDivider} from "react-toolbox";
-import {Grid, Row, Col} from 'react-material-responsive-grid';
 import DefaultPathWays from "../data/tgac";
 import PathwayEditor from "./pathwayEditor/PathwayEditor";
 import {AppStorageHandler} from "../service/AppStorageHandler";
@@ -20,6 +19,10 @@ import VerticalGeneSetScoresView from "./VerticalGeneSetScoresView";
 import {izip, cycle} from 'itertools';
 import {scoreChiSquaredData} from "../functions/ColorFunctions";
 import {ColorEditor} from "./ColorEditor";
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group'; // ES6
+import '../css/transitions.css';
+import TransitionStyle from '../css/transitions.css';
+
 
 let xenaQuery = require('ucsc-xena-client/dist/xenaQuery');
 let {sparseDataMatchPartialField, refGene} = xenaQuery;
@@ -632,12 +635,46 @@ export default class XenaGeneSetApp extends PureComponent {
                                         </td>
                                         <td width={this.state.showPathwayDetails ? VERTICAL_GENESET_DETAIL_WIDTH : VERTICAL_GENESET_SUPPRESS_WIDTH}>
                                             {this.state.showPathwayDetails &&
-                                            <FaArrowLeft onClick={this.hideGeneSetDetail}
-                                                         className={BaseStyle.mouseHover}/>
+                                            <ReactCSSTransitionGroup
+                                                transitionName="example"
+                                                transitionAppear={true}
+                                                transitionAppearTimeout={1000}
+                                                transitionEnterTimeout={500}
+                                                // transitionEnter={false}
+                                                // transitionLeave={false}
+                                                transitionLeaveTimeout={300}>
+                                                <FaArrowLeft onClick={this.hideGeneSetDetail}
+                                                             className={BaseStyle.mouseHover}/>
+                                            </ReactCSSTransitionGroup>
                                             }
+
                                             {!this.state.showPathwayDetails &&
-                                            <FaArrowRight onClick={this.showGeneSetDetail}
-                                                          className={BaseStyle.mouseHover}/>
+                                            <ReactCSSTransitionGroup
+                                                // transitionName={
+                                                // {
+                                                //     enter: TransitionStyle["example-enter"],
+                                                //     leave: TransitionStyle["example-leave"],
+                                                //     appear: TransitionStyle["example-appear-active"],
+                                                // }
+                                                transitionName={{
+                                                    // enter: TransitionStyle.enter,
+                                                    // enterActive: TransitionStyle.enterActive,
+                                                    // leave: TransitionStyle.leave,
+                                                    // leaveActive: TransitionStyle.leaveActive,
+                                                    appear: TransitionStyle.appear,
+                                                    appearActive: TransitionStyle.appearActive
+                                                }}
+                                                // }
+                                                // transitionName='example'
+                                                transitionAppear={true}
+                                                // transitionAppearTimeout={1000}
+                                                // transitionEnterTimeout={500}
+                                                // transitionLeaveTimeout={300}
+                                            >
+                                                <div>toodles</div>
+                                                <FaArrowRight onClick={this.showGeneSetDetail}
+                                                              className={BaseStyle.mouseHover}/>
+                                            </ReactCSSTransitionGroup>
                                             }
                                         </td>
                                     </tr>
